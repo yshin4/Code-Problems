@@ -7,7 +7,7 @@ class HashTable {
     }
 
     hashFunction(key) {
-        return key.length % bucketArray.length;
+        return key.length % this.bucketArray.length;
     }
 
     insert(key, value) {
@@ -27,10 +27,8 @@ class HashTable {
 
     rehash() {
         const tempArray = this.bucketArray;
-        this.bucketArray = new Array (tempArray.length);
-        for (let b in tempArray) {
-            openAddress(b.key, b.value);
-        }
+        this.bucketArray = new Array(tempArray.length);
+        tempArray.forEach(b => this.openAddress(b.key, b.value));
     }
 
     openAddress(key, value) {
@@ -47,9 +45,9 @@ class HashTable {
 
     get(key) {
         const index = this.hashFunction(key);
-        while (this.bucketArray(index)) {
-            if (this.bucketArray(index).key === key) {
-                return this.bucketArray(index);
+        while (this.bucketArray[index]) {
+            if (this.bucketArray[index].key === key) {
+                return this.bucketArray[index];
             }
             index += 1;
             index %= this.bucketArray.length;
@@ -61,7 +59,8 @@ class HashTable {
 
 const hs = new HashTable();
 const a = ["Justin", "jen", "Marc", "Tyler", "Anthony", "Danica", "Alejandro"];
-for (name in a) {
+for (let name of a) {
     hs.insert(name, name);
 }
-
+console.log(hs.get("Justin"));
+console.log(hs.get("jen"));
